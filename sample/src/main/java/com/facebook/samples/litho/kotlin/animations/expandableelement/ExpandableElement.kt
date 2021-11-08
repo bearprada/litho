@@ -45,17 +45,6 @@ class ExpandableElement(
   override fun ComponentScope.render(): Component? {
     val expanded = useState { false }
 
-    useTransition(
-        Transition.parallel(
-            Transition.allLayout(),
-            Transition.create(TRANSITION_MSG_PARENT)
-                .animate(AnimatedProperties.HEIGHT)
-                .appearFrom(0f),
-            Transition.create(TRANSITION_TOP_DETAIL, TRANSITION_BOTTOM_DETAIL)
-                .animate(AnimatedProperties.HEIGHT)
-                .appearFrom(0f)
-                .disappearTo(0f)))
-
     return Column(
         style =
             Style.padding(top = 8.dp).transitionKey(context, TRANSITION_MSG_PARENT).onClick {

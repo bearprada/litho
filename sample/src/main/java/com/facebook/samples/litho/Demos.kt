@@ -200,7 +200,9 @@ class Demos {
                                 name = "Selection", component = SelectionCollectionKComponent()),
                             SingleDemo(
                                 name = "SubCollections", component = SubCollectionsKComponent()),
-                            SingleDemo(name = "Friends", component = FriendsCollectionKComponent()),
+//                            SingleDemo(name = "Friends") { context ->
+//                                    FriendsCollectionKComponent.create(context).build()
+//                                },
                             SingleDemo(
                                 name = "Horizontal Scroll",
                                 component = HorizontalScrollKComponent()),

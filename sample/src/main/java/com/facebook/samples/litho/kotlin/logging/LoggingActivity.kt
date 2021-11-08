@@ -17,16 +17,38 @@
 package com.facebook.samples.litho.kotlin.logging
 
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup.LayoutParams.*
+import android.widget.FrameLayout
+import android.widget.LinearLayout
+import androidx.core.view.ViewCompat
 import com.facebook.litho.ComponentContext
 import com.facebook.litho.LithoView
 import com.facebook.samples.litho.NavigatableDemoActivity
+import com.facebook.samples.litho.kotlin.collection.ComposerComponent
+import com.facebook.samples.litho.kotlin.collection.FriendsCollectionKComponent
 
 class LoggingActivity : NavigatableDemoActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    val c = ComponentContext(this, "LITHOSAMPLE", SampleComponentsLogger())
-    setContentView(LithoView.create(c, LoggingRootComponent()))
+    val c = ComponentContext(this)
+    val view = FrameLayout(this).apply {  // Root
+       layoutParams = FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
+       addView(LinearLayout(context).apply {  // composer and message list
+          layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
+          orientation = LinearLayout.VERTICAL
+
+          addView(LinearLayout(context).apply { // message list
+                orientation = LinearLayout.VERTICAL
+                setWeight(setHeight(this, MATCH_PARENT), 1f)
+                addView(setHeight(LithoView.create(c, FriendsCollectionKComponent.create(c).build()), MATCH_PARENT)) // message list ui
+                addView(View(context).apply { id = ViewCompat.generateViewId() }) // snackbar
+          })
+          addView(setWeight(setHeight(LithoView.create(c, ComposerComponent.create(c).build()), WRAP_CONTENT), 1f)) // composer ui
+      })
+    }
+    setContentView(view)
   }
 }
